@@ -18,7 +18,6 @@ enum VendorStatus {
   PENDING
   APPROVED
   REJECTED
-  SUSPENDED
 }
 
 enum ProductStatus {
@@ -68,7 +67,7 @@ model User {
 
 
   // cart           Cart?
-  // vendor         Vendor?
+  vendor         Vendor?
   // wishlist       Wishlist[]
   // orders         Order[]
   // reviews        Review[]
@@ -77,4 +76,27 @@ model User {
   @@index([clerkId])
   @@map("users")
 }
+
+
+model Vendor {
+  id              String        @id @default(cuid())
+  
+  vendorName      String
+  addresses       String?
+  approvedAt      DateTime?
+  requestedAt     DateTime      @default(now())
+  rejectedReason  String?
+
+  status          VendorStatus  @default(PENDING)
+
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+
+  userId          String        @unique
+  user            User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([status])
+  @@map("vendors")
+}
+
 
