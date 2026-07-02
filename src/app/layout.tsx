@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { ClerkProvider } from "@clerk/nextjs";
 
 import { Geist, Geist_Mono } from "next/font/google";
+import { Toaster } from 'react-hot-toast';
+
 import "./globals.css";
 import Navbar from "@/components/navbar/navbar";
 
@@ -30,8 +32,8 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        
         <ClerkProvider>
+          <Toaster  position="top-center" />
           <Navbar />
           {children}
         </ClerkProvider>
