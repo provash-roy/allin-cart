@@ -1,4 +1,6 @@
-import Sidebar from "@/components/shared/sidebar";
+import DashboardSidebar from "@/components/shared/sidebar";
+
+import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 
 export default function VendorLayout({
   children,
@@ -6,9 +8,12 @@ export default function VendorLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="flex">
-      <Sidebar role="vendor" />
-      <main className="flex-1">{children}</main>
-    </div>
+    <SidebarProvider>
+      <DashboardSidebar role="vendor" />
+      <main>
+        <SidebarTrigger />
+        {children}
+      </main>
+    </SidebarProvider>
   );
 }

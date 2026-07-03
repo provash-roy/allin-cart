@@ -1,4 +1,6 @@
-import Sidebar from "@/components/shared/sidebar";
+import DashboardSidebar from "@/components/shared/sidebar";
+
+import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 
 export default function AdminLayout({
   children,
@@ -6,9 +8,12 @@ export default function AdminLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="flex">
-      <Sidebar role="admin" />
-      <main className="flex-1 bg-gray-50">{children}</main>
-    </div>
+    <SidebarProvider>
+      <DashboardSidebar role="admin" />
+      <main>
+        <SidebarTrigger />
+        {children}
+      </main>
+    </SidebarProvider>
   );
 }
