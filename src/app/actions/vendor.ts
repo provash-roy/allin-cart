@@ -21,7 +21,7 @@ export async function updateVendorStatus(
       where: { id: vendorId },
       data: {
         status,
-        ...(status === "APPROVED" && { role: "VENDOR" }),
+        ...(status === "APPROVED" && { approvedAt: new Date(), user: { update: { role: "VENDOR" } } }),
         ...(status === "REJECTED" && { rejectedReason: "Rejected by admin" }),
       },
     });
