@@ -51,3 +51,13 @@ export type User = Prisma.UserModel
  * 
  */
 export type Vendor = Prisma.VendorModel
+/**
+ * Model Review
+ * 
+ */
+export type Review = Prisma.ReviewModel
+/**
+ * Model Product
+ * 
+ */
+export type Product = Prisma.ProductModel

@@ -10,9 +10,9 @@ export default function VendorLayout({
   return (
     <SidebarProvider>
       <DashboardSidebar role="vendor" />
-      <main>
-        <SidebarTrigger />
-        {children}
+      <main className="min-h-screen w-full">
+        <SidebarTrigger className="m-4" />
+        <div className="w-full">{children}</div>
       </main>
     </SidebarProvider>
   );

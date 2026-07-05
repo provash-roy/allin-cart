@@ -35,7 +35,7 @@ export default function AdminDashboard({ vendors }: { vendors: Vendor[] }) {
   };
 
   return (
-    <div className="flex flex-col min-h-screen items-center justify-center">
+    <div className="w-full flex flex-col min-h-screen items-center justify-center mx-auto p-4">
       <h1 className="text-xl font-semibold mb-6">Admin Dashboard</h1>
 
       <div className="w-full max-w-md space-y-4">
