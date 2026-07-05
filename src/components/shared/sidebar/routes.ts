@@ -8,7 +8,6 @@ import {
   Settings,
 } from "lucide-react";
 
-
 export const adminSidebarRoutes = [
   {
     label: "Dashboard",
@@ -47,43 +46,40 @@ export const adminSidebarRoutes = [
   },
 ];
 
-
-
-
 export const vendorSidebarRoutes = [
   {
     label: "Dashboard",
-    href: "vendor/dashboard",
+    href: "dashboard",
     icon: LayoutDashboard,
   },
   {
     label: "Vendors",
-    href: "vendor/dashboard/vendors",
+    href: "vendors",
     icon: Store,
   },
   {
     label: "Products",
-    href: "vendor/dashboard/products",
+    href: "products",
     icon: Package,
   },
   {
     label: "Orders",
-    href: "vendor/dashboard/orders",
+    href: "orders",
     icon: ShoppingBag,
   },
   {
     label: "Customers",
-    href: "vendor/dashboard/customers",
+    href: "customers",
     icon: Users,
   },
   {
     label: "Reports",
-    href: "vendor/dashboard/reports",
+    href: "reports",
     icon: BarChart3,
   },
   {
     label: "Settings",
-    href: "vendor/dashboard/settings",
+    href: "settings",
     icon: Settings,
   },
 ];

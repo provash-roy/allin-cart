@@ -70,7 +70,7 @@ model User {
   vendor         Vendor?
   // wishlist       Wishlist[]
   // orders         Order[]
-  // reviews        Review[]
+  reviews        Review[]
   // notifications  Notification[]
   @@index([email])
   @@index([clerkId])
@@ -94,9 +94,59 @@ model Vendor {
 
   userId          String        @unique
   user            User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+ 
+ products        Product[]
 
   @@index([status])
   @@map("vendors")
 }
 
+model Review {
+  id              String        @id @default(cuid())
+  rating          Int
+  comment         String?
+  
+  productId       String
+  product         Product       @relation(fields: [productId], references: [id], onDelete: Cascade)
 
+  userId          String
+  user            User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+
+  @@index([productId])
+  @@index([userId])
+  @@map("reviews")
+}
+
+model Product {
+  id              String        @id @default(cuid())
+  name            String
+  description     String?
+  price           Float
+  stock           Int
+  status          ProductStatus @default(DRAFT)
+
+  images          String[]
+  category        String?
+
+  isFeatured      Boolean       @default(false)
+  isWearable      Boolean       @default(false)
+
+  replacementDate DateTime?
+  highlights       String[]
+  warranty        Int?
+  payOnDelivery   Boolean       @default(false)
+
+  reviews         Review[]
+
+  vendorId        String
+  vendor          Vendor        @relation(fields: [vendorId], references: [id], onDelete: Cascade)
+
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+
+  @@index([status])
+  @@map("products")
+}
