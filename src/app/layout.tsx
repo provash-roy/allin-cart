@@ -28,7 +28,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} bg-linear-to-br from-gray-900 via-black to-gray-900 text-white min-h-screen antialiased`}
       >
         <ClerkProvider>
           <Toaster position="top-center" />
