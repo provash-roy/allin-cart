@@ -1,10 +1,6 @@
 "use client";
 
-import { useState } from "react";
 import { ColumnDef } from "@tanstack/react-table";
-import { MoreHorizontal } from "lucide-react";
-
-import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -25,6 +21,13 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+
+import { Eye, Check, X, Trash2 } from "lucide-react";
+import { updateVendorStatus } from "@/app/actions/vendor";
+import toast from "react-hot-toast";
+
 export type Vendor = {
   id: string;
   name: string;
@@ -36,105 +39,158 @@ export const columns: ColumnDef<Vendor>[] = [
   {
     accessorKey: "name",
     header: "Vendor",
+    cell: ({ row }) => <div className="font-medium">{row.original.name}</div>,
   },
+
   {
     accessorKey: "addresses",
-    header: "Addresses",
+    header: "Address",
+    cell: ({ row }) => (
+      <div className="max-w-[250px] truncate text-muted-foreground">
+        {row.original.addresses}
+      </div>
+    ),
   },
+
   {
     accessorKey: "status",
     header: "Status",
+
+    cell: ({ row }) => {
+      const status = row.original.status;
+
+      return (
+        <Badge
+          className={
+            status === "APPROVED"
+              ? "bg-green-600 hover:bg-green-600"
+              : status === "REJECTED"
+                ? "bg-red-600 hover:bg-red-600"
+                : "bg-yellow-500 hover:bg-yellow-500"
+          }
+        >
+          {status}
+        </Badge>
+      );
+    },
   },
 
-  // 🔥 ACTIONS
   {
     id: "actions",
-    header: "Action",
+    header: "Actions",
+
     cell: ({ row }) => {
       const vendor = row.original;
 
-      const handleApprove = () => {
-        console.log("Approve:", vendor.id);
-      };
+      const handleStatus = async (status: "APPROVED" | "REJECTED") => {
+        try {
+          await updateVendorStatus(vendor.id, status);
 
-      const handleReject = () => {
-        console.log("Reject:", vendor.id);
-      };
+          toast.success(`Vendor ${status.toLowerCase()} successfully`);
 
-      const handleDelete = () => {
-        console.log("Delete:", vendor.id);
+          window.location.reload();
+        } catch (error) {
+          toast.error("Something went wrong");
+
+          console.log(error);
+        }
       };
 
       return (
-        <div className="flex items-center gap-2">
-          {/* 👁️ VIEW DIALOG */}
-          <Dialog>
-            <DialogTrigger asChild>
-              <Button variant="outline" size="sm">
-                View
-              </Button>
-            </DialogTrigger>
+        <Dialog>
+          <DialogTrigger asChild>
+            <Button size="sm" variant="outline" className="gap-2">
+              <Eye size={16} />
+              View
+            </Button>
+          </DialogTrigger>
 
-            <DialogContent>
-              <DialogHeader>
-                <DialogTitle>Vendor Details</DialogTitle>
-              </DialogHeader>
+          <DialogContent className="sm:max-w-[500px]">
+            <DialogHeader>
+              <DialogTitle className="text-center text-xl">
+                Vendor Details
+              </DialogTitle>
+            </DialogHeader>
 
-              <div className="space-y-2 text-sm">
-                <p>
-                  <b>ID:</b> {vendor.id}
-                </p>
-                <p>
-                  <b>Name:</b> {vendor.name}
-                </p>
-                <p>
-                  <b>Address:</b> {vendor.addresses}
-                </p>
-                <p>
-                  <b>Status:</b> {vendor.status}
-                </p>
+            <div className="space-y-4">
+              <div className="rounded-lg border p-4 space-y-3">
+                <div className="flex justify-between">
+                  <span className="text-muted-foreground">ID</span>
+
+                  <span className="font-medium">{vendor.id}</span>
+                </div>
+
+                <div className="flex justify-between">
+                  <span className="text-muted-foreground">Name</span>
+
+                  <span className="font-medium">{vendor.name}</span>
+                </div>
+
+                <div className="flex justify-between gap-5">
+                  <span className="text-muted-foreground">Address</span>
+
+                  <span className="text-right">{vendor.addresses}</span>
+                </div>
+
+                <div className="flex justify-between">
+                  <span className="text-muted-foreground">Status</span>
+
+                  <Badge>{vendor.status}</Badge>
+                </div>
               </div>
-            </DialogContent>
-          </Dialog>
 
-          {/* ✅ APPROVE */}
-          <Button size="sm" onClick={handleApprove}>
-            Approve
-          </Button>
+              <div className="flex justify-end gap-3">
+                <Button
+                  className="gap-2 bg-green-600 hover:bg-green-700"
+                  onClick={() => handleStatus("APPROVED")}
+                >
+                  <Check size={16} />
+                  Approve
+                </Button>
 
-          {/* ❌ REJECT */}
-          <Button size="sm" variant="secondary" onClick={handleReject}>
-            Reject
-          </Button>
+                <Button
+                  variant="destructive"
+                  className="gap-2"
+                  onClick={() => handleStatus("REJECTED")}
+                >
+                  <X size={16} />
+                  Reject
+                </Button>
 
-          {/* 🗑️ DELETE ALERT DIALOG */}
-          <AlertDialog>
-            <AlertDialogTrigger asChild>
-              <Button size="sm" variant="destructive">
-                Delete
-              </Button>
-            </AlertDialogTrigger>
+                <AlertDialog>
+                  <AlertDialogTrigger asChild>
+                    <Button variant="outline" className="gap-2 text-red-600">
+                      <Trash2 size={16} />
+                      Delete
+                    </Button>
+                  </AlertDialogTrigger>
 
-            <AlertDialogContent>
-              <AlertDialogHeader>
-                <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                  <AlertDialogContent>
+                    <AlertDialogHeader>
+                      <AlertDialogTitle>Delete Vendor?</AlertDialogTitle>
 
-                <AlertDialogDescription>
-                  This action cannot be undone. This will permanently delete the
-                  vendor.
-                </AlertDialogDescription>
-              </AlertDialogHeader>
+                      <AlertDialogDescription>
+                        This action cannot be undone. Vendor will be permanently
+                        removed.
+                      </AlertDialogDescription>
+                    </AlertDialogHeader>
 
-              <AlertDialogFooter>
-                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                    <AlertDialogFooter>
+                      <AlertDialogCancel>Cancel</AlertDialogCancel>
 
-                <AlertDialogAction onClick={handleDelete}>
-                  Delete
-                </AlertDialogAction>
-              </AlertDialogFooter>
-            </AlertDialogContent>
-          </AlertDialog>
-        </div>
+                      <AlertDialogAction
+                        className="bg-red-600 hover:bg-red-700"
+                        onClick={() => {}}
+                      >
+                        Delete
+                      </AlertDialogAction>
+                    </AlertDialogFooter>
+                  </AlertDialogContent>
+                </AlertDialog>
+              </div>
+            </div>
+          </DialogContent>
+        </Dialog>
       );
     },
   },

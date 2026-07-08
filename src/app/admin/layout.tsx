@@ -9,11 +9,11 @@ export default function AdminLayout({
 }) {
   return (
     <SidebarProvider>
-      <DashboardSidebar role="admin" />
-      <main>
-        <SidebarTrigger />
-        {children}
-      </main>
-    </SidebarProvider>
+          <DashboardSidebar role="admin" />
+          <main className="min-h-screen w-full">
+            <SidebarTrigger className="m-4" />
+            <div className="w-full">{children}</div>
+          </main>
+        </SidebarProvider>
   );
 }
