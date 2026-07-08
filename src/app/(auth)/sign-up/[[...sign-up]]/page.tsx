@@ -1,5 +1,12 @@
 import { SignUp } from "@clerk/nextjs";
+import { dark } from "@clerk/ui/themes";
 
 export default function Page() {
-  return <SignUp />;
+  return (
+    <SignUp
+      appearance={{
+        theme: dark,
+      }}
+    />
+  );
 }
