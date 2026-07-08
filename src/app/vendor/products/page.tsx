@@ -10,10 +10,9 @@ export default function ProductsPage() {
     router.push("products/add-product");
   };
   return (
-    <div className="max-w-7xl mx-auto p-6 min-h-screen flex items-center justify-center">
-      <div className="flex items-center justify-between mb-6">
-        <h1 className="text-2xl font-semibold">Products</h1>
-
+    <div className="p-8 ">
+      <div className="flex items-center justify-between gap-4 mb-6">
+        <h1 className="text-2xl font-semibold">My Products</h1>
         <Button
           onClick={handleClick}
           className="bg-blue-500 hover:bg-blue-600 text-white flex items-center gap-2"
